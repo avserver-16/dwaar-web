@@ -20,9 +20,6 @@ export default function Login() {
       <form className="card auth-card" onSubmit={submit}>
         <div className="brand big">Dwaar</div>
         <p className="muted">Sign in to your account</p>
-        <Field label="Email">
-          <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </Field>
         <Field label="Phone number">
           <input required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
         </Field>
