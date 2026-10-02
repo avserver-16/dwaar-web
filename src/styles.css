@@ -1,3 +1,41 @@
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Comfortaa-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Comfortaa-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Comfortaa-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Comfortaa-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Comfortaa-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --bg: #f6f7f9; --panel: #fff; --text: #1a1d23; --muted: #6b7280; --line: #e5e7eb;
   --accent: #4f46e5; --accent-text: #fff; --mine: #e0e7ff; --danger: #dc2626; --ok: #16a34a;
@@ -10,7 +48,14 @@
   }
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'CustomFont', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
 h1, h3 { margin: 0; }
 a { color: var(--accent); }
 .muted { color: var(--muted); }
