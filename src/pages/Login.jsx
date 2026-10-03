@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
 import { Field, useAction } from '../components';
+import AuthLayout from './AuthLayout';
 
 export default function Login() {
   const { login } = useAuth();
@@ -16,19 +17,21 @@ export default function Login() {
   };
 
   return (
-    <div className="auth">
-      <form className="card auth-card" onSubmit={submit}>
-        <div className="brand big">Dwaar</div>
-        <p className="muted">Sign in to your account</p>
-        <Field label="Phone number">
-          <input required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </Field>
-        <Field label="Password">
-          <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </Field>
-        <button disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
-        <p className="muted center">New here? <Link to="/register">Create an account</Link></p>
-      </form>
-    </div>
+    <AuthLayout subtitle="Sign in to your account" onSubmit={submit}>
+      <Field label="Phone number">
+        <input required type="tel" inputMode="tel" autoComplete="tel"
+          value={phone} onChange={(e) => setPhone(e.target.value)} />
+      </Field>
+      <Field label="Password">
+        <input required type="password" autoComplete="current-password"
+          value={password} onChange={(e) => setPassword(e.target.value)} />
+      </Field>
+
+      <button disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
+
+      <p className="muted center auth-foot">
+        New here? <Link to="/register">Create an account</Link>
+      </p>
+    </AuthLayout>
   );
 }

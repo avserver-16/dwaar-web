@@ -1,0 +1,183 @@
+/* Login page: gold glow (left) fading to black (right), card on the right */
+
+.auth-particles {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 32px 9vw;
+  background: #000;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Back layer: soft gold sweep + a warm bloom behind the left edge */
+.auth-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 0% 50%, rgba(248, 203, 70, 0.55) 0%, rgba(248, 203, 70, 0) 70%),
+    linear-gradient(to right,
+      rgba(248, 203, 70, 0.72) 0%,
+      rgba(200, 150, 40, 0.38) 22%,
+      rgba(120, 80, 20, 0.16) 48%,
+      rgba(0, 0, 0, 0) 72%);
+}
+
+/* ---------- Card ---------- */
+.auth-particles .auth-card {
+  --gold: #f8cb46;
+  --gold-soft: rgba(248, 203, 70, 0.18);
+  --ink: #1a1403;
+  --text: #f6f0df;
+  --text-dim: rgba(246, 240, 223, 0.62);
+  --line: rgba(255, 255, 255, 0.12);
+
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 36px 32px 28px;
+  font-family: 'CustomFont', 'Comfortaa', system-ui, sans-serif;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(8, 8, 10, 0.74);
+  border: 1px solid rgba(248, 203, 70, 0.22);
+  border-radius: 24px;
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(248, 203, 70, 0.06);
+  animation: auth-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.auth-card .auth-head { display: grid; gap: 8px; margin-bottom: 6px; }
+
+.auth-particles .auth-card .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.auth-card .door-mark { color: var(--gold); flex: none; }
+
+.auth-card p { margin: 0; }
+.auth-card .muted { color: var(--text-dim); font-size: 14px; font-weight: 400; }
+
+/* Labels + inputs (works with whatever markup Field renders) */
+.auth-card label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.auth-card input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  outline: none;
+  caret-color: var(--gold);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.auth-card input:hover { border-color: rgba(255, 255, 255, 0.22); }
+.auth-card input:focus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
+}
+/* keep browser autofill dark instead of light blue/white */
+.auth-card input:-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  box-shadow: 0 0 0 100px #15130c inset;
+  caret-color: var(--gold);
+}
+
+/* Primary button */
+.auth-card button {
+  height: 52px;
+  margin-top: 6px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  background: linear-gradient(180deg, #fbd864 0%, #f2b932 100%);
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(248, 203, 70, 0.22), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+}
+.auth-card button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 34px rgba(248, 203, 70, 0.3), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+}
+.auth-card button:active:not(:disabled) { transform: translateY(0); }
+.auth-card button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.auth-card button:disabled { opacity: 0.65; cursor: progress; }
+
+/* Footer link */
+.auth-card .auth-foot {
+  margin-top: 4px;
+  padding-top: 18px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+.auth-card a {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.auth-card a:hover { border-bottom-color: var(--gold); }
+.auth-card a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+
+/* Validation messages (Register) */
+.auth-card small { font-size: 12.5px; font-weight: 500; line-height: 1.4; }
+.auth-card .err-text { color: #ff8f85; }
+.auth-card .ok-text { color: #7fdc9e; }
+.auth-card input[aria-invalid='true'] {
+  border-color: #ff8f85;
+  box-shadow: 0 0 0 4px rgba(255, 143, 133, 0.14);
+}
+
+@keyframes auth-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-particles .auth-card { animation: none; }
+  .auth-card button, .auth-card input { transition: none; }
+}
+
+@media (max-width: 720px) {
+  .auth-particles { justify-content: center; padding: 24px 16px; }
+  .auth-particles .auth-card { padding: 30px 22px 24px; }
+  .auth-fade {
+    background: radial-gradient(90% 60% at 50% 0%, rgba(248, 203, 70, 0.4), rgba(0, 0, 0, 0) 70%);
+  }
+}
