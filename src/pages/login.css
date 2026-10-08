@@ -1,183 +1,714 @@
-/* Login page: gold glow (left) fading to black (right), card on the right */
+/* =========================================================
+   BLACK + DARK RED + INDIGO THEME
+   Put this at the VERY END of login.css
+   ========================================================= */
 
 .auth-particles {
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 32px 9vw;
-  background: #000;
-  overflow: hidden;
+  background: #000000 !important;
   isolation: isolate;
 }
 
-/* Back layer: soft gold sweep + a warm bloom behind the left edge */
-.auth-fade {
+/* Red / Indigo background glow */
+.auth-particles .auth-fade {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+
   background:
-    radial-gradient(60% 70% at 0% 50%, rgba(248, 203, 70, 0.55) 0%, rgba(248, 203, 70, 0) 70%),
-    linear-gradient(to right,
-      rgba(248, 203, 70, 0.72) 0%,
-      rgba(200, 150, 40, 0.38) 22%,
-      rgba(120, 80, 20, 0.16) 48%,
-      rgba(0, 0, 0, 0) 72%);
+    radial-gradient(
+      65% 75% at 0% 50%,
+      rgba(139, 0, 0, 0.65) 0%,
+      rgba(139, 0, 0, 0.30) 30%,
+      rgba(139, 0, 0, 0) 72%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(139, 0, 0, 0.60) 0%,
+      rgba(75, 0, 130, 0.35) 45%,
+      rgba(75, 0, 130, 0.12) 65%,
+      rgba(0, 0, 0, 0) 82%
+    ) !important;
 }
 
-/* ---------- Card ---------- */
-.auth-particles .auth-card {
-  --gold: #f8cb46;
-  --gold-soft: rgba(248, 203, 70, 0.18);
-  --ink: #1a1403;
-  --text: #f6f0df;
-  --text-dim: rgba(246, 240, 223, 0.62);
-  --line: rgba(255, 255, 255, 0.12);
+/* Make sure the canvas is above the glow */
+.auth-particles canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
 
+/* Card stays above everything */
+.auth-particles .auth-card {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 36px 32px 28px;
-  font-family: 'CustomFont', 'Comfortaa', system-ui, sans-serif;
-  font-weight: 500;
-  color: var(--text);
-  background: rgba(8, 8, 10, 0.74);
-  border: 1px solid rgba(248, 203, 70, 0.22);
-  border-radius: 24px;
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+
+  background: rgba(8, 8, 10, 0.78) !important;
+
+  border-color: rgba(139, 0, 0, 0.30);
+
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-    0 30px 80px rgba(0, 0, 0, 0.6),
-    0 0 60px rgba(248, 203, 70, 0.06);
-  animation: auth-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    0 30px 80px rgba(0, 0, 0, 0.75),
+    0 0 60px rgba(139, 0, 0, 0.08),
+    0 0 100px rgba(75, 0, 130, 0.06);
 }
 
-.auth-card .auth-head { display: grid; gap: 8px; margin-bottom: 6px; }
+/* Remove old gold text/icon colors */
+.auth-particles .door-mark {
+  color: #8b0000 !important;
+}
 
-.auth-particles .auth-card .brand {
+/* Inputs */
+.auth-particles .auth-card input {
+  caret-color: #b30000;
+}
+
+.auth-particles .auth-card input:focus {
+  border-color: #8b0000 !important;
+  box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.20);
+}
+
+/* Button */
+.auth-particles .auth-card button {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b0000 0%,
+      #a00000 45%,
+      #4b0082 100%
+    ) !important;
+
+  box-shadow:
+    0 10px 28px rgba(139, 0, 0, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.15) inset;
+}
+
+/* Links */
+.auth-particles .auth-card a {
+  color: #a855f7 !important;
+}
+
+.auth-particles .auth-card a:hover {
+  border-bottom-color: #a855f7;
+}
+
+
+.auth-intro {
+  position: absolute;
+  z-index: 2;
+
+  left: 9vw;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: min(520px, 42vw);
+
+  color: #ffffff;
+
+  pointer-events: none;
+}
+
+.auth-intro-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0;
-  font-size: 30px;
+
+  min-height: 72px;
+
+  font-family: 'CustomFont', 'Comfortaa', system-ui, sans-serif;
+  font-size: clamp(48px, 5vw, 76px);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-.auth-card .door-mark { color: var(--gold); flex: none; }
+  letter-spacing: -0.045em;
 
-.auth-card p { margin: 0; }
-.auth-card .muted { color: var(--text-dim); font-size: 14px; font-weight: 400; }
+  color: #ffffff;
 
-/* Labels + inputs (works with whatever markup Field renders) */
-.auth-card label {
-  display: grid;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-dim);
+  text-shadow:
+    0 0 25px rgba(139, 0, 0, 0.35),
+    0 0 50px rgba(75, 0, 130, 0.18);
 }
 
-.auth-card input {
-  width: 100%;
-  height: 50px;
-  padding: 0 16px;
-  font: inherit;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  outline: none;
-  caret-color: var(--gold);
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-}
-.auth-card input:hover { border-color: rgba(255, 255, 255, 0.22); }
-.auth-card input:focus {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px var(--gold-soft);
-}
-/* keep browser autofill dark instead of light blue/white */
-.auth-card input:-webkit-autofill {
-  -webkit-text-fill-color: var(--text);
-  box-shadow: 0 0 0 100px #15130c inset;
-  caret-color: var(--gold);
-}
+.auth-intro-description {
+  max-width: 500px;
 
-/* Primary button */
-.auth-card button {
-  height: 52px;
-  margin-top: 6px;
-  font: inherit;
+  margin: 24px 0 0;
+
+  font-family: 'CustomFont', 'Comfortaa', system-ui, sans-serif;
   font-size: 16px;
+  font-weight: 400;
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  min-height: 150px;
+}
+
+.typing-cursor {
+  display: inline-block;
+
+  width: 2px;
+  height: 0.9em;
+
+  margin-left: 5px;
+
+  vertical-align: -0.05em;
+
+  background: #a855f7;
+
+  box-shadow:
+    0 0 8px rgba(168, 85, 247, 0.8),
+    0 0 18px rgba(139, 0, 0, 0.5);
+
+  animation: typing-blink 0.8s steps(1) infinite;
+}
+
+.auth-intro-line {
+  width: 80px;
+  height: 3px;
+
+  margin-top: 28px;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    90deg,
+    #8b0000,
+    #4b0082
+  );
+
+  box-shadow:
+    0 0 15px rgba(139, 0, 0, 0.4),
+    0 0 25px rgba(75, 0, 130, 0.25);
+
+  opacity: 0;
+
+  animation: intro-line-in 0.7s ease forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes typing-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-line-in {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+
+  to {
+    width: 80px;
+    opacity: 1;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .auth-intro {
+    left: 5vw;
+    width: 43vw;
+  }
+
+  .auth-intro-description {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+}
+
+/* Mobile:
+   Hide the product introduction so the login form
+   remains the main focus. */
+@media (max-width: 720px) {
+  .auth-intro {
+    position: relative;
+
+    left: auto;
+    top: auto;
+    transform: none;
+
+    width: 100%;
+
+    text-align: center;
+
+    margin-bottom: 24px;
+  }
+
+  .auth-intro-brand {
+    justify-content: center;
+    font-size: 48px;
+  }
+
+  .auth-intro-description {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .auth-intro-line {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+.auth-particles .auth-card {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 430px;
+  padding: 34px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20, 20, 24, 0.92),
+      rgba(7, 7, 10, 0.94)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(139, 0, 0, 0.08),
+    0 0 70px rgba(75, 0, 130, 0.08);
+
+  overflow: hidden;
+}
+
+/* Subtle top gradient line */
+
+.auth-particles .auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(179, 0, 0, 0.8),
+    rgba(168, 85, 247, 0.8),
+    transparent
+  );
+
+  opacity: 0.8;
+}
+
+
+/* ================================
+   BRAND / WELCOME
+================================ */
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.login-logo {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #8b0000,
+    #4b0082
+  );
+
+  color: white;
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--ink);
-  background: linear-gradient(180deg, #fbd864 0%, #f2b932 100%);
+
+  box-shadow:
+    0 8px 25px rgba(139, 0, 0, 0.25),
+    0 8px 30px rgba(75, 0, 130, 0.2);
+}
+
+.login-brand h1 {
+  margin: 0;
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 700;
+
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.login-brand p {
+  margin: 5px 0 0;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 12px;
+}
+
+
+/* ================================
+   FIELDS
+================================ */
+
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* Override generic Field styling if necessary */
+
+.auth-particles .auth-card label {
+  display: block;
+  margin-bottom: 8px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   INPUT WRAPPER
+================================ */
+
+.input-wrap {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  height: 52px;
+
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-wrap:focus-within {
+  background: rgba(255, 255, 255, 0.06);
+
+  border-color: rgba(168, 85, 247, 0.55);
+
+  box-shadow:
+    0 0 0 3px rgba(168, 85, 247, 0.08),
+    0 0 25px rgba(75, 0, 130, 0.1);
+}
+
+
+/* ================================
+   INPUT PREFIX
+================================ */
+
+.input-icon {
+  width: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 11px;
+  font-weight: 600;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.password-icon {
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+
+/* ================================
+   INPUT
+================================ */
+
+.input-wrap input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0 14px;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 13px;
+}
+
+.input-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* ================================
+   PASSWORD TOGGLE
+================================ */
+
+.password-toggle {
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 5px 12px !important;
+
+  flex-shrink: 0;
+
+  background: transparent !important;
+  border: 0 !important;
+
+  color: rgba(255, 255, 255, 0.4) !important;
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 10px !important;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: none !important;
+}
+
+.password-toggle:hover {
+  color: #a855f7 !important;
+}
+
+
+/* ================================
+   SIGN IN BUTTON
+================================ */
+
+.login-submit {
+  width: 100%;
+  height: 54px;
+
+  margin-top: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 18px 0 20px;
+
   border: 0;
   border-radius: 14px;
+
+  background: linear-gradient(
+    100deg,
+    #8b0000,
+    #b30000 45%,
+    #4b0082
+  );
+
+  color: #fff;
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(248, 203, 70, 0.22), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
-  transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
-}
-.auth-card button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-  box-shadow: 0 14px 34px rgba(248, 203, 70, 0.3), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
-}
-.auth-card button:active:not(:disabled) { transform: translateY(0); }
-.auth-card button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.auth-card button:disabled { opacity: 0.65; cursor: progress; }
 
-/* Footer link */
-.auth-card .auth-foot {
-  margin-top: 4px;
-  padding-top: 18px;
-  text-align: center;
-  border-top: 1px solid var(--line);
+  box-shadow:
+    0 10px 30px rgba(139, 0, 0, 0.25),
+    0 8px 30px rgba(75, 0, 130, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
-.auth-card a {
-  color: var(--gold);
-  font-weight: 600;
+
+.login-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  filter: brightness(1.1);
+
+  box-shadow:
+    0 14px 35px rgba(139, 0, 0, 0.32),
+    0 10px 35px rgba(75, 0, 130, 0.22);
+}
+
+.login-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.button-arrow {
+  font-size: 19px;
+  font-weight: 400;
+
+  transition: transform 0.2s ease;
+}
+
+.login-submit:hover .button-arrow {
+  transform: translateX(3px);
+}
+
+
+/* ================================
+   DIVIDER
+================================ */
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 25px 0 18px;
+}
+
+.login-divider span {
+  flex: 1;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.login-divider p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.3);
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 10px;
+}
+
+
+/* ================================
+   CREATE ACCOUNT
+================================ */
+
+.create-account {
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+
+  color: rgba(255, 255, 255, 0.7);
+
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s;
-}
-.auth-card a:hover { border-bottom-color: var(--gold); }
-.auth-card a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 
+  font-family: 'CustomFont', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
 
-/* Validation messages (Register) */
-.auth-card small { font-size: 12.5px; font-weight: 500; line-height: 1.4; }
-.auth-card .err-text { color: #ff8f85; }
-.auth-card .ok-text { color: #7fdc9e; }
-.auth-card input[aria-invalid='true'] {
-  border-color: #ff8f85;
-  box-shadow: 0 0 0 4px rgba(255, 143, 133, 0.14);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
-@keyframes auth-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
+.create-account span {
+  font-size: 16px;
+  transition: transform 0.2s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .auth-particles .auth-card { animation: none; }
-  .auth-card button, .auth-card input { transition: none; }
+.create-account:hover {
+  color: #fff;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  border-color: rgba(168, 85, 247, 0.3);
 }
+
+.create-account:hover span {
+  transform: translateX(3px);
+}
+
+
+/* ================================
+   PRIVACY TEXT
+================================ */
+
+.login-privacy {
+  margin: 18px 0 0;
+
+  text-align: center;
+
+  color: rgba(255, 255, 255, 0.22);
+
+  font-family: 'CustomFont', sans-serif;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
 
 @media (max-width: 720px) {
-  .auth-particles { justify-content: center; padding: 24px 16px; }
-  .auth-particles .auth-card { padding: 30px 22px 24px; }
-  .auth-fade {
-    background: radial-gradient(90% 60% at 50% 0%, rgba(248, 203, 70, 0.4), rgba(0, 0, 0, 0) 70%);
+  .auth-particles .auth-card {
+    max-width: 430px;
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  .login-brand {
+    margin-bottom: 26px;
+  }
+
+  .login-brand h1 {
+    font-size: 21px;
+  }
+
+  .login-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
   }
 }
