@@ -54,34 +54,142 @@ export default function Explore() {
       </Card>
 
       <Card title="Search any coordinates">
-        <div className="row wrap">
-          <Field label="Latitude"><input type="number" step="any" min="-90" max="90" value={q.lat} onChange={setQv('lat')} /></Field>
-          <Field label="Longitude"><input type="number" step="any" min="-180" max="180" value={q.lon} onChange={setQv('lon')} /></Field>
-          <Field label="Radius (m)"><input type="number" min="1" max="50000" value={q.radius} onChange={setQv('radius')} /></Field>
-          <button className="ghost" type="button" onClick={useDevice}>Use my device</button>
-        </div>
-        <div className="row wrap">
-          <button disabled={busy || q.lat === '' || q.lon === ''} onClick={() => run(async () => setBuildings((await api.spatialNearby(body())).data))}>Nearby buildings</button>
-          <button disabled={busy || q.lat === '' || q.lon === ''} onClick={() => run(async () => setRooms(await api.spatialNearbyRooms(body())))}>Nearby rooms</button>
-        </div>
+        <details className="coordinate-dropdown">
+          <summary>
+            <span>Configure search coordinates</span>
+            <span className="dropdown-arrow">⌄</span>
+          </summary>
+
+          <div className="coordinate-content">
+            <div className="row wrap">
+              <Field label="Latitude">
+                <input
+                  type="number"
+                  step="any"
+                  min="-90"
+                  max="90"
+                  value={q.lat}
+                  onChange={setQv('lat')}
+                />
+              </Field>
+
+              <Field label="Longitude">
+                <input
+                  type="number"
+                  step="any"
+                  min="-180"
+                  max="180"
+                  value={q.lon}
+                  onChange={setQv('lon')}
+                />
+              </Field>
+
+              <Field label="Radius (m)">
+                <input
+                  type="number"
+                  min="1"
+                  max="50000"
+                  value={q.radius}
+                  onChange={setQv('radius')}
+                />
+              </Field>
+
+              <button
+                className="ghost"
+                type="button"
+                onClick={useDevice}
+              >
+                Use my device
+              </button>
+            </div>
+
+            <div className="row wrap coordinate-actions">
+              <button
+                disabled={busy || q.lat === '' || q.lon === ''}
+                onClick={() =>
+                  run(async () =>
+                    setBuildings(
+                      (await api.spatialNearby(body())).data
+                    )
+                  )
+                }
+              >
+                Nearby buildings
+              </button>
+
+              <button
+                disabled={busy || q.lat === '' || q.lon === ''}
+                onClick={() =>
+                  run(async () =>
+                    setRooms(await api.spatialNearbyRooms(body()))
+                  )
+                }
+              >
+                Nearby rooms
+              </button>
+            </div>
+          </div>
+        </details>
       </Card>
 
-      {buildings && <Card title={`Buildings (${buildings.length})`}><Buildings list={buildings} /></Card>}
+
+      {buildings && (
+        <Card title={`Buildings (${buildings.length})`}>
+          <details className="coordinate-dropdown">
+            <summary>
+              <span>View searched buildings</span>
+              <span className="dropdown-arrow">⌄</span>
+            </summary>
+
+            <div className="coordinate-content">
+              <Buildings list={buildings} />
+            </div>
+          </details>
+        </Card>
+      )}
 
       {rooms && (
         <Card title={`Rooms (${rooms.summary?.total_rooms ?? rooms.data.length})`}>
-          {rooms.summary && <p className="muted small">{rooms.summary.full_rooms} full · {rooms.summary.partial_rooms} partial</p>}
-          {rooms.data.length === 0 && <Empty>No rooms nearby.</Empty>}
-          <ul className="list">
-            {rooms.data.map((r) => (
-              <li key={r._id} className="item">
-                <div className="grow"><b>{r.name}</b><div className="muted small">{r.description}</div></div>
-                <button className="ghost" onClick={() => joinRoom(r._id)}>Join</button>
-              </li>
-            ))}
-          </ul>
+          <details className="coordinate-dropdown">
+            <summary>
+              <span>View nearby rooms</span>
+              <span className="dropdown-arrow">⌄</span>
+            </summary>
+
+            <div className="coordinate-content">
+              {rooms.summary && (
+                <p className="muted small">
+                  {rooms.summary.full_rooms} full · {rooms.summary.partial_rooms} partial
+                </p>
+              )}
+
+              {rooms.data.length === 0 ? (
+                <Empty>No rooms nearby.</Empty>
+              ) : (
+                <ul className="list">
+                  {rooms.data.map((r) => (
+                    <li key={r._id} className="item">
+                      <div className="grow">
+                        <b>{r.name}</b>
+                        <div className="muted small">{r.description}</div>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="ghost"
+                        onClick={() => joinRoom(r._id)}
+                      >
+                        Join
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </details>
         </Card>
       )}
+
     </>
   );
 }

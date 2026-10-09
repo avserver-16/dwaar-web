@@ -12,7 +12,6 @@ import Upload from './pages/Upload';
 import Status from './pages/Status';
 
 const NAV = [
-  ['/', 'Profile'],
   ['/explore', 'Explore'],
   ['/rooms', 'Rooms'],
   ['/groups', 'Groups'],
@@ -20,6 +19,7 @@ const NAV = [
   ['/users', 'People'],
   ['/upload', 'Upload'],
   ['/status', 'Status'],
+  ['/', 'Profile'],
 ];
 
 function Shell() {
@@ -65,7 +65,6 @@ export default function App() {
       <Route path="/login" element={<Guest><Login /></Guest>} />
       <Route path="/register" element={<Guest><Register /></Guest>} />
       <Route element={<Protected />}>
-        <Route index element={<Profile />} />
         <Route path="explore" element={<Explore />} />
         <Route path="rooms" element={<Rooms />} />
         <Route path="groups" element={<Groups />} />
@@ -73,6 +72,7 @@ export default function App() {
         <Route path="users" element={<Users />} />
         <Route path="upload" element={<Upload />} />
         <Route path="status" element={<Status />} />
+        <Route index element={<Profile />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
