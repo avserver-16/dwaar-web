@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import ParticleNetwork from './components/Particles';
 import './login.css';
+import FloatingWords from './Floating';
 
 const description =
   'A hyperlocal community platform connecting people to nearby groups through pseudonymous, real-time interactions.';
@@ -14,9 +15,9 @@ function AnimatedIntro() {
 
     // Type "Dwaar"
     if (phase === 'title') {
-      if (text.length < 5) {
+      if (text.length < 6) {
         timeout = setTimeout(() => {
-          setText('Dwaar'.slice(0, text.length + 1));
+          setText('Dwaar.'.slice(0, text.length + 1));
         }, 180);
       } else {
         timeout = setTimeout(() => {
@@ -47,7 +48,7 @@ function AnimatedIntro() {
             <span className="typing-cursor" />
           </>
         ) : (
-          <span>Dwaar</span>
+          <span>Dwaar.</span>
         )}
       </div>
 
@@ -58,7 +59,7 @@ function AnimatedIntro() {
         </p>
       )}
 
-      <div className="auth-intro-line" />
+      {/* <div className="auth-intro-line" /> */}
     </section>
   );
 }
@@ -72,7 +73,9 @@ export default function AuthLayout({
   return (
     <div className="auth auth-particles">
       {/* Background glow */}
+      <FloatingWords/>
       <div className="auth-fade" aria-hidden="true" />
+      <ParticleNetwork />
 
       {/* Particle network */}
       <ParticleNetwork

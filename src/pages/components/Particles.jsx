@@ -14,7 +14,7 @@ export default function ParticleNetwork({
   maxParticles = 300,
   maxDistance = 150,
   speed = 0.5,
-  mouseRadius = 190,
+  mouseRadius = 300,
 }) {
   const canvasRef = useRef(null);
 

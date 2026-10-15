@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context';
@@ -13,6 +12,9 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [run, busy] = useAction();
+
+  // Digits only, max 10 (the +91 prefix is shown separately)
+  const onPhoneChange = (e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10));
 
   const submit = (e) => {
     e.preventDefault();
@@ -30,8 +32,6 @@ export default function Login() {
       subtitle="Sign in to your account"
       onSubmit={submit}
     >
-      
-
       <div className="login-fields">
         <Field label="Phone number">
           <div className="input-wrap">
@@ -39,21 +39,23 @@ export default function Login() {
 
             <input
               required
+              autoFocus
               type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="Enter your phone number"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              placeholder="10-digit mobile number"
+              pattern="[0-9]{10}"
+              maxLength={10}
+              title="Enter a 10-digit mobile number"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={onPhoneChange}
             />
           </div>
         </Field>
 
         <Field label="Password">
           <div className="input-wrap">
-            {/* <span className="input-icon password-icon">
-              •••
-            </span> */}
+            {/* <span className="input-icon password-icon" aria-hidden="true">••••</span> */}
 
             <input
               required
@@ -69,6 +71,7 @@ export default function Login() {
               className="password-toggle"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-pressed={showPassword}
             >
               {showPassword ? 'Hide' : 'Show'}
             </button>
@@ -79,7 +82,7 @@ export default function Login() {
       <button
         type="submit"
         className="login-submit"
-        disabled={busy}
+        disabled={busy || phone.length !== 10 || !password}
       >
         <span>{busy ? 'Signing in…' : 'Sign in'}</span>
         {!busy && <span className="button-arrow">→</span>}
@@ -97,7 +100,7 @@ export default function Login() {
       </Link>
 
       <p className="login-privacy">
-        By continuing, you agree to use Dwaar responsibly.
+        Encrypted &amp; pseudonymous. By continuing, you agree to use Dwaar responsibly.
       </p>
     </AuthLayout>
   );
