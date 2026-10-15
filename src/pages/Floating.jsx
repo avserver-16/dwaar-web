@@ -1,11 +1,41 @@
 import { useMemo } from 'react';
 
-// Words that fit the app. Edit freely.
+// Copy drawn from the Dwaar README: hyperlocal communities, building-level
+// discovery, 500 m / 1 km ranges, rooms, live chat, typing and presence.
+// The placards are shown in uppercase via CSS, so write them naturally.
+// Keep each under ~22 characters so they stay compact.
 const WORDS = [
-  'Explore', 'Rooms', 'Groups', 'Dispatch', 'Grid', 'Nearby', 'Signal',
-  'Encrypted', 'Pseudonymous', 'Local', 'Whisper', 'Status', 'People',
-  'Anonymous', 'Broadcast', 'Relay', 'Drift', 'Echo', 'Beacon', 'Orbit',
-  'Mesh', 'Pulse', 'Private', 'Radius', 'Messages', 'Upload',
+  // the idea
+  'Open the door',
+  'Hyperlocal',
+  'Around you',
+  'Close to home',
+  'Local first',
+  'Find your people',
+  // proximity
+  'Your building',
+  'Same street',
+  'Right next door',
+  '500m radius',
+  '1km radius',
+  'Nearby rooms',
+  // community
+  'Your neighbours',
+  'Your community',
+  'Join the room',
+  'Start a group',
+  'Say hi locally',
+  // live
+  'Real-time chat',
+  'Online now',
+  'Typing…',
+  'Private message',
+  'Group chat',
+  'Message history',
+  'Share a photo',
+  // the door
+  'Knock knock',
+  'Come on in',
 ];
 
 // Small seeded PRNG so placards land in the same spots on every render
