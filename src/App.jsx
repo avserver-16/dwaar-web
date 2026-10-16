@@ -21,7 +21,7 @@ const MESSAGE_PAGES = [
 ];
 
 const PROFILE_PAGES = [
-  ['/', 'Profile'],
+  ['/profile', 'Profile'],
   ['/status', 'Status'],
 ];
 
@@ -116,7 +116,7 @@ const ProfileIcon = () => (
 );
 
 const TABS = [
-  { to: '/', label: 'Explore', icon: CompassIcon, paths: ['/explore'] },
+  { to: '/explore', label: 'Explore', icon: CompassIcon, paths: ['/explore'] },
   { to: '/messages', label: 'Messages', icon: ChatIcon, paths: MESSAGE_PAGES.map(([p]) => p) },
   { to: '/upload', label: 'Upload', icon: UploadIcon, paths: ['/upload'] },
   { to: '/profile', label: 'Profile', icon: ProfileIcon, paths: PROFILE_PAGES.map(([p]) => p) },
@@ -259,7 +259,7 @@ function Navbar() {
 
           {menuOpen && (
             <div className="user-menu" role="menu">
-              <NavLink to="/" end role="menuitem" onClick={() => setMenuOpen(false)}>
+              <NavLink to="/profile" end role="menuitem" onClick={() => setMenuOpen(false)}>
                 Profile
               </NavLink>
               <button role="menuitem" className="menu-danger" onClick={logout}>
@@ -298,21 +298,48 @@ function Guest({ children }) {
   return user ? <Navigate to="/" replace /> : children;
 }
 
+
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Guest><Login /></Guest>} />
-      <Route path="/register" element={<Guest><Register /></Guest>} />
+      {/* Public routes */}
+      <Route
+        path="/login"
+        element={
+          <Guest>
+            <Login />
+          </Guest>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <Guest>
+            <Register />
+          </Guest>
+        }
+      />
+
+      {/* Protected routes */}
       <Route element={<Protected />}>
-        <Route path="explore" element={<Explore />} />
-        <Route path="rooms" element={<Rooms />} />
-        <Route path="groups" element={<Groups />} />
-        <Route path="messages" element={<Messages />} />
-        <Route path="users" element={<Users />} />
-        <Route path="upload" element={<Upload />} />
-        <Route path="status" element={<Status />} />
-        <Route index element={<Profile />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/rooms" element={<Rooms />} />
+        <Route path="/groups" element={<Groups />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/upload" element={<Upload />} />
+        <Route path="/status" element={<Status />} />
+
+        {/* Default authenticated landing page */}
+        <Route
+          index
+          element={<Navigate to="/explore" replace />}
+        />
       </Route>
+
+      {/* Handle unknown URLs */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
