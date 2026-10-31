@@ -1,83 +1,76 @@
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
-import { io } from 'socket.io-client';
-import { api, BASE, tokens, setAuthLostHandler } from './api';
+import { useEffect } from 'react';
+import { useAuthStore } from './stores/useAuthStore';
+import { useSocketStore } from './stores/useSocketStore';
+import { useToastStore } from './stores/useToastStore';
+import { tokens } from './api';
 
-/* ---------- Auth ---------- */
-const AuthCtx = createContext(null);
-export const useAuth = () => useContext(AuthCtx);
+export const useAuth = () => {
+  const user = useAuthStore((s) => s.user);
+  const loading = useAuthStore((s) => s.loading);
+  const login = useAuthStore((s) => s.login);
+  const logout = useAuthStore((s) => s.logout);
+  const refreshUser = useAuthStore((s) => s.refreshUser);
+  return { user, loading, login, logout, refreshUser };
+};
+
+export const useSocket = () => {
+  const socket = useSocketStore((s) => s.socket);
+  const online = useSocketStore((s) => s.online);
+  const connected = useSocketStore((s) => s.connected);
+  const lastLocation = useSocketStore((s) => s.lastLocation);
+  const updateLocation = useSocketStore((s) => s.updateLocation);
+  return { socket, online, connected, lastLocation, updateLocation };
+};
+
+export const useToast = () => {
+  return useToastStore((s) => s.push);
+};
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(!!tokens.access);
+  const initAuth = useAuthStore((s) => s.initAuth);
 
   useEffect(() => {
-    setAuthLostHandler(() => setUser(null));
-    if (!tokens.access) return;
-    api.me().then(setUser).catch(() => tokens.clear()).finally(() => setLoading(false));
-  }, []);
+    initAuth();
+  }, [initAuth]);
 
-  const login = useCallback(async (creds) => {
-    const data = await api.login(creds);
-    tokens.set(data.token, data.refreshToken);
-    setUser(data.user);
-    return data.user;
-  }, []);
-
-  const logout = useCallback(async () => {
-    try { await api.logout(); } catch { /* ignore */ }
-    tokens.clear();
-    setUser(null);
-  }, []);
-
-  const refreshUser = useCallback(async () => setUser(await api.me()), []);
-
-  const value = useMemo(() => ({ user, loading, login, logout, refreshUser }), [user, loading, login, logout, refreshUser]);
-  return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>;
+  return children;
 }
-
-/* ---------- Socket ---------- */
-const SocketCtx = createContext({ socket: null, online: [] });
-export const useSocket = () => useContext(SocketCtx);
 
 export function SocketProvider({ children }) {
-  const { user } = useAuth();
-  const [socket, setSocket] = useState(null);
-  const [online, setOnline] = useState([]);
-  const [connected, setConnected] = useState(false);
+  const user = useAuthStore((s) => s.user);
+  const connect = useSocketStore((s) => s.connect);
+  const disconnect = useSocketStore((s) => s.disconnect);
 
   useEffect(() => {
-    if (!user) return undefined;
-    const s = io(BASE || window.location.origin, { auth: { token: tokens.access } });
-    const register = () => { setConnected(true); s.emit('register_user', { userId: user._id }); };
-    s.on('connect', register);
-    s.on('disconnect', () => setConnected(false));
-    s.on('online_users', (list) => setOnline(Array.isArray(list) ? list.map((u) => (typeof u === 'object' ? u._id || u.userId : u)) : []));
-    s.on('user_offline', (id) => setOnline((o) => o.filter((x) => x !== id)));
-    setSocket(s);
-    return () => { s.disconnect(); setSocket(null); setConnected(false); };
-  }, [user?._id]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (user && tokens.access) {
+      connect(tokens.access);
+    } else {
+      disconnect();
+    }
+  }, [user?._id, connect, disconnect]);
 
-  const value = useMemo(() => ({ socket, online, connected }), [socket, online, connected]);
-  return <SocketCtx.Provider value={value}>{children}</SocketCtx.Provider>;
+  return children;
 }
 
-/* ---------- Toasts ---------- */
-const ToastCtx = createContext(() => {});
-export const useToast = () => useContext(ToastCtx);
-
 export function ToastProvider({ children }) {
-  const [items, setItems] = useState([]);
-  const push = useCallback((text, kind = 'ok') => {
-    const id = Math.random();
-    setItems((i) => [...i, { id, text, kind }]);
-    setTimeout(() => setItems((i) => i.filter((x) => x.id !== id)), 4000);
-  }, []);
+  const toasts = useToastStore((s) => s.toasts);
+  const remove = useToastStore((s) => s.remove);
+
   return (
-    <ToastCtx.Provider value={push}>
+    <>
       {children}
       <div className="toasts">
-        {items.map((t) => <div key={t.id} className={`toast ${t.kind}`}>{t.text}</div>)}
+        {toasts.map((t) => (
+          <div
+            key={t.id}
+            className={`toast ${t.kind}`}
+            onClick={() => remove(t.id)}
+            role="alert"
+          >
+            {t.text}
+          </div>
+        ))}
       </div>
-    </ToastCtx.Provider>
+    </>
   );
 }

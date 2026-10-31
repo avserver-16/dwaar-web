@@ -28,10 +28,7 @@ export default function Login() {
   };
 
   return (
-    <AuthLayout
-      subtitle="Sign in to your account"
-      onSubmit={submit}
-    >
+    <AuthLayout title="Sign in" onSubmit={submit}>
       <div className="login-fields">
         <Field label="Phone number">
           <div className="input-wrap">
@@ -99,9 +96,6 @@ export default function Login() {
         <span>→</span>
       </Link>
 
-      <p className="login-privacy">
-        Encrypted &amp; pseudonymous. By continuing, you agree to use Dwaar responsibly.
-      </p>
     </AuthLayout>
   );
 }

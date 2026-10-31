@@ -28,10 +28,6 @@ const PROFILE_PAGES = [
 const isActivePath = (pathname, p) =>
   p === '/' ? pathname === '/' : pathname === p || pathname.startsWith(`${p}/`);
 
-// TODO: replace with real values from the user's profile / settings
-const LOCATION = 'Vasai, MH';
-const RADIUS = '5km Radius';
-
 const Icon = ({ children, size = 18, ...rest }) => (
   <svg
     width={size}
@@ -49,24 +45,10 @@ const Icon = ({ children, size = 18, ...rest }) => (
   </svg>
 );
 
-const PinIcon = () => (
-  <Icon size={17}>
-    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z" />
-    <circle cx="12" cy="10" r="3" />
-  </Icon>
-);
-
 const SearchIcon = () => (
   <Icon size={20}>
     <circle cx="11" cy="11" r="7" />
     <path d="m21 21-4.3-4.3" />
-  </Icon>
-);
-
-const BellIcon = () => (
-  <Icon size={20}>
-    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
   </Icon>
 );
 
@@ -205,16 +187,9 @@ function Navbar() {
     <header className="navbar">
       <div className="topbar">
         <NavLink to="/explore" className="logo" aria-label="Dwaar home">
-          <LogoMark />
+          {/* <LogoMark /> */}
           <span className="logo-word">DWAAR</span>
         </NavLink>
-
-        <div className="pill pill-loc">
-          <PinIcon />
-          <span>{LOCATION}</span>
-          <span className="pill-sep">•</span>
-          <span className="pill-strong">{RADIUS}</span>
-        </div>
 
         <form className="searchbar" onSubmit={onSearch} role="search">
           <SearchIcon />
@@ -222,7 +197,7 @@ function Navbar() {
             ref={searchRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search grid, dispatch, rooms..."
+            placeholder="Search buildings and rooms"
             aria-label="Search"
           />
           <kbd className="kbd">⌘K</kbd>
@@ -233,12 +208,8 @@ function Navbar() {
           title={connected ? 'Realtime connected' : 'Realtime offline'}
         >
           <span className="enc-dot" />
-          <span>ENCRYPTED &amp; PSEUDONYMOUS</span>
+          <span>{connected ? 'Connected' : 'Offline'}</span>
         </div>
-
-        <button className="icon-btn icon-btn-disabled" aria-label="Notifications" title="Yet to be unlocked">
-          <BellIcon />
-        </button>
 
         <div className="user-wrap" ref={menuRef}>
           <button

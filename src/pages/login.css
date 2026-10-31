@@ -67,6 +67,11 @@
 }
 
 /* Card stays above everything */
+.auth-head h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
 .auth-particles .auth-card {
   position: relative;
   z-index: 2;
@@ -143,15 +148,13 @@
   min-height: 72px;
 
   font-family: 'CustomFont', 'Comfortaa', system-ui, sans-serif;
-  font-size: clamp(96px, 5vw, 128px);
+  font-size: clamp(56px, 5vw, 88px);
   font-weight: 700;
   letter-spacing: -0.045em;
 
   color: #ffffff;
 
-  text-shadow:
-    0 0 25px rgba(131, 0, 0, 0.45),
-    0 0 50px rgba(255, 0, 0, 0.18);
+  text-shadow: none;
 }
 
 .auth-intro-description {
@@ -698,23 +701,6 @@
 
 
 /* ================================
-   PRIVACY TEXT
-================================ */
-
-.login-privacy {
-  margin: 18px 0 0;
-
-  text-align: center;
-
-  color: rgba(255, 255, 255, 0.22);
-
-  font-family: 'CustomFont', sans-serif;
-  font-size: 9px;
-  line-height: 1.5;
-}
-
-
-/* ================================
    MOBILE
 ================================ */
 
@@ -740,98 +726,3 @@
   }
 }
 
-/* ================================
-   FLOATING WORD PLACARDS (galaxy)
-   Place <FloatingWords /> inside .auth-particles
-================================ */
-
-.floating-words {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
-
-  /* keep the area behind the intro text and card calmer */
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55) 0%, #000 70%);
-  mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55) 0%, #000 70%);
-}
-
-.word-placard {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 7px 14px;
-
-  border-radius: 10px;
-  border: 1px solid rgba(255, 97, 97, 0.28);
-  background: rgba(255, 51, 51, 0.06);
-
-  color: rgba(255, 255, 255, 0.95);
-
-  font-family: 'CustomFont', system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  white-space: nowrap;
-
-  /* opacity: var(--op); */
-  filter: blur(var(--blur));
-  transform: translate3d(0, 0, 0) scale(var(--s)) rotate(0deg);
-  will-change: transform;
-
-  animation: placard-drift var(--dur) ease-in-out var(--delay) infinite alternate;
-}
-
-.placard-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-  flex: none;
-}
-
-/* Near placards twinkle a touch */
-.word-placard.depth-3 {
-  animation:
-    placard-drift var(--dur) ease-in-out var(--delay) infinite alternate,
-    placard-twinkle 7s ease-in-out var(--delay) infinite;
-}
-
-@keyframes placard-drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(var(--s)) rotate(0deg);
-  }
-  50% {
-    transform: translate3d(calc(var(--dx) * .6), calc(var(--dy) * -.8), 0)
-      scale(var(--s)) rotate(var(--rot));
-  }
-  100% {
-    transform: translate3d(var(--dx), var(--dy), 0) scale(var(--s)) rotate(calc(var(--rot) * -.6));
-  }
-}
-
-@keyframes placard-twinkle {
-  0%, 100% { opacity: var(--op); }
-  50%      { opacity: calc(var(--op) * .6); }
-}
-
-@media (max-width: 720px) {
-  .word-placard {
-    font-size: 10px;
-    padding: 5px 10px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .word-placard,
-  .word-placard.depth-3 {
-    animation: none;
-  }
-}

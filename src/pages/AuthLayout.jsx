@@ -1,97 +1,17 @@
 
-import { useEffect, useState } from 'react';
-import ParticleNetwork from './components/Particles';
 import './login.css';
-import FloatingWords from './Floating';
 
-const description =
-  'A hyperlocal community platform connecting people to nearby groups through pseudonymous, real-time interactions.';
-function AnimatedIntro() {
-  const [text, setText] = useState('');
-  const [phase, setPhase] = useState('title');
-
-  useEffect(() => {
-    let timeout;
-
-    // Type "Dwaar"
-    if (phase === 'title') {
-      if (text.length < 6) {
-        timeout = setTimeout(() => {
-          setText('Dwaar.'.slice(0, text.length + 1));
-        }, 180);
-      } else {
-        timeout = setTimeout(() => {
-          setText('');
-          setPhase('description');
-        }, 1200);
-      }
-    }
-
-    // Type description
-    if (phase === 'description') {
-      if (text.length < description.length) {
-        timeout = setTimeout(() => {
-          setText(description.slice(0, text.length + 1));
-        }, 18);
-      }
-    }
-
-    return () => clearTimeout(timeout);
-  }, [text, phase]);
-
-  return (
-    <section className="auth-intro" aria-label="About Dwaar">
-      <div className="auth-intro-brand">
-        {phase === 'title' ? (
-          <>
-            <span>{text}</span>
-            <span className="typing-cursor" />
-          </>
-        ) : (
-          <span>Dwaar.</span>
-        )}
-      </div>
-
-      {phase === 'description' && (
-        <p className="auth-intro-description">
-          {text}
-          <span className="typing-cursor" />
-        </p>
-      )}
-
-      {/* <div className="auth-intro-line" /> */}
-    </section>
-  );
-}
-
-/** Shared shell for Login + Register: glow, particles, and the card. */
-export default function AuthLayout({
-  subtitle,
-  onSubmit,
-  children,
-}) {
+/** Shared shell for the login and registration forms. */
+export default function AuthLayout({ title, onSubmit, children }) {
   return (
     <div className="auth auth-particles">
-      {/* Background glow */}
-      <FloatingWords/>
-      <div className="auth-fade" aria-hidden="true" />
-      <ParticleNetwork />
-
-      {/* Particle network */}
-      <ParticleNetwork
-        color="139, 0, 0"
-        secondaryColor="75, 0, 130"
-      />
-
-      {/* Left-side animated product introduction */}
-      <AnimatedIntro />
-
-      {/* Auth card */}
+      <section className="auth-intro" aria-label="Dwaar">
+        <div className="auth-intro-brand">Dwaar</div>
+      </section>
       <form className="card auth-card" onSubmit={onSubmit}>
         <header className="auth-head">
-          <p className="muted">{subtitle}</p>
+          <h1>{title}</h1>
         </header>
-
         {children}
       </form>
     </div>

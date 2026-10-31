@@ -61,7 +61,7 @@ function Attachment({ a, type }) {
   if (!a?.url) return null;
   if (type === 'IMAGE') return <a href={a.url} target="_blank" rel="noreferrer"><img className="att-img" src={a.url} alt={a.fileName || 'image'} /></a>;
   if (type === 'VIDEO') return <video className="att-img" src={a.url} controls />;
-  return <a className="att-file" href={a.url} target="_blank" rel="noreferrer">📎 {a.fileName || 'Download file'}</a>;
+  return <a className="att-file" href={a.url} target="_blank" rel="noreferrer">{a.fileName || 'Download file'}</a>;
 }
 
 /** Chat window shared by private, group and room conversations. */
@@ -131,7 +131,7 @@ export function ChatThread({ messages, meId, nameOf, onSend, onTyping, typingLab
       {!readOnly && (
         <form className="composer" onSubmit={submit}>
           <input type="file" hidden ref={fileRef} onChange={pickFile} />
-          <button type="button" className="ghost" disabled={busy} onClick={() => fileRef.current.click()} title="Attach file">📎</button>
+          <button type="button" className="ghost" disabled={busy} onClick={() => fileRef.current.click()} aria-label="Attach file" title="Attach file">Attach</button>
           <input value={text} onChange={change} placeholder={busy ? 'Uploading…' : 'Type a message'} />
           <button type="submit" disabled={busy}>Send</button>
         </form>
@@ -140,10 +140,11 @@ export function ChatThread({ messages, meId, nameOf, onSend, onTyping, typingLab
   );
 }
 
-/** Loads the user directory once and gives an id → name lookup. */
+import { useUsersQuery } from './queries/useUserQueries';
+
+/** Loads the user directory and gives an id → name lookup backed by TanStack Query. */
 export function useUsers() {
-  const [users, setUsers] = useState([]);
-  useEffect(() => { api.users().then(setUsers).catch(() => {}); }, []);
+  const { data: users = [] } = useUsersQuery();
   const nameOf = (id) => users.find((u) => u._id === id)?.name || 'Someone';
   return { users, nameOf };
 }

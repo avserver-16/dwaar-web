@@ -29,7 +29,7 @@ export default function Register() {
   };
 
   return (
-    <AuthLayout subtitle="Create your account" onSubmit={submit}>
+    <AuthLayout title="Create account" onSubmit={submit}>
       <Field label="Full name">
         <input required autoComplete="name" value={f.name} onChange={set('name')} />
       </Field>
